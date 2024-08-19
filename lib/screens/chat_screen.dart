@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:messaging_app/auth.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -79,6 +80,30 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              TextButton(
+                child: ListTile(
+                  leading: Icon(Icons.verified_user),
+                  title: Text("Profil"),
+                  subtitle: Text(""),
+                ),
+                onPressed: () {},
+              ),
+              TextButton(
+                child: ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text("Logout"),
+                  subtitle: Text("Keluar dari aplikasi"),
+                ),
+                onPressed: Auth().signOut,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
