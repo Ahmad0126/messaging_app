@@ -1,35 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_app/auth.dart';
 import 'package:messaging_app/screens/chat_list_screen.dart';
-import 'package:messaging_app/screens/register_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     try {
-      await Auth().signInWithEmailAndPassword(
+      await Auth().createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      );
+      ).then((data) {
+        if(Auth().currentUser != null){
+          FirebaseFirestore.instance.collection('users').doc(Auth().currentUser!.uid).set({
+            "name": _nameController.text,
+            "status": 'online',
+            "profile": 'default'
+          });
+        }
+      });
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => ChatListScreen()),
       );
     } on FirebaseAuthException catch (e) {
-      print('Login error: $e');
+      print('Register error: $e');
+
       setState(() {
         Alert(
           context: context,
-          title: "Login Gagal",
+          title: "Register Gagal",
           desc: e.message,
           buttons: [
             DialogButton(
@@ -40,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ).show();
         _emailController.text = '';
         _passwordController.text = '';
+        _nameController.text = '';
       });
     }
   }
@@ -47,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: Text('Register')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -61,25 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
               decoration: InputDecoration(labelText: 'Password'),
             ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Text("Belum Punya Akun? "),
-                  TextButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen())), 
-                    child: Text("Daftar"),
-                    style: ButtonStyle(foregroundColor: WidgetStateColor.resolveWith((states) {
-                      return Colors.blue;
-                    },)),
-                  )
-                ],
-              ),
+            TextField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: 'Name'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _login,
-              child: Text('Login'),
+              onPressed: _register,
+              child: Text('Register'),
             ),
           ],
         ),

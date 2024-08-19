@@ -18,9 +18,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _sendMessage() async {
     final user = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance.collection('messages').add({
-      'chatId': widget.chatId,
-      'senderId': user!.uid,
-      'messageText': _messageController.text,
+      'chat_id': widget.chatId,
+      'user_id': user!.uid,
+      'message': _messageController.text,
       'timestamp': FieldValue.serverTimestamp(),
     });
     _messageController.clear();
@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('messages')
-                  .where('chatId', isEqualTo: widget.chatId)
+                  .where('chat_id', isEqualTo: widget.chatId)
                   .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -50,8 +50,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     final message = messages[index];
                     return ListTile(
-                      title: Text(message['messageText']),
-                      subtitle: Text('Sender ID: ${message['senderId']}'),
+                      title: Text(message['message']),
+                      subtitle: Text('Sender ID: ${message['user_id']}'),
                     );
                   },
                 );

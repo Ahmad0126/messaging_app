@@ -26,7 +26,7 @@ class ChatListScreen extends StatelessWidget {
               final chat = chats[index];
               return ListTile(
                 title: Text('Chat with ${chat['participants'].firstWhere((id) => id != user.uid)}'),
-                subtitle: Text(chat['lastMessage']),
+                subtitle: Text(chat['last_message']),
                 onTap: () {
                   Navigator.push(
                     context,
