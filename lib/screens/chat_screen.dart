@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_app/auth.dart';
+import 'package:messaging_app/screens/login_screen.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -50,9 +52,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    return ListTile(
-                      title: Text(message['message']),
-                      subtitle: Text('Sender ID: ${message['user_id']}'),
+                    return StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection('users')
+                        .doc(message['user_id'])
+                        .snapshots(), 
+                      builder: (context, snap1) {
+                        if (!snap1.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        return ListTile(
+                          title: Text(snap1.data!.get('name')+" 10/09/2024 10:08"),
+                          subtitle: Text(message['message']),
+                        );
+                      },
                     );
                   },
                 );
@@ -99,7 +111,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   title: Text("Logout"),
                   subtitle: Text("Keluar dari aplikasi"),
                 ),
-                onPressed: Auth().signOut,
+                onPressed: () async{
+                  await Auth().signOut();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
               ),
             ],
           ),
