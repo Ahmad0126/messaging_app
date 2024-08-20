@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_app/auth.dart';
 import 'package:messaging_app/screens/login_screen.dart';
-import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -24,6 +23,10 @@ class _ChatScreenState extends State<ChatScreen> {
       'chat_id': widget.chatId,
       'user_id': user!.uid,
       'message': _messageController.text,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+    await FirebaseFirestore.instance.collection('chats').doc(widget.chatId).update({
+      'last_message': _messageController.text,
       'timestamp': FieldValue.serverTimestamp(),
     });
     _messageController.clear();

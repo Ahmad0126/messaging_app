@@ -66,16 +66,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: 'Enter your Email'),
             ),
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: 'Make your Password'),
             ),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: 'Enter your Name'),
             ),
             SizedBox(height: 20),
             ElevatedButton(

@@ -86,9 +86,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => MaterialPageRoute(
+        onPressed: () => Navigator.push(context, MaterialPageRoute(
           builder: (context) => UserList(),
-        ),
+        )),
         child: Icon(Icons.add),
       ),
     );
