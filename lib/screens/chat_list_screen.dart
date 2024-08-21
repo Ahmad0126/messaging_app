@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messaging_app/auth.dart';
 import 'package:messaging_app/screens/login_screen.dart';
+import 'package:messaging_app/screens/profile_page.dart';
 import 'package:messaging_app/screens/user_list.dart';
 import 'chat_screen.dart';
 
@@ -68,7 +69,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   title: Text("Profil"),
                   subtitle: Text(""),
                 ),
-                onPressed: () {},
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
               ),
               ElevatedButton(
                 child: ListTile(
