@@ -4,6 +4,8 @@ import 'package:messaging_app/auth.dart';
 import 'package:messaging_app/screens/chat_screen.dart';
 
 class UserList extends StatefulWidget{
+  const UserList({super.key});
+
 
   @override
   _UserListState createState() => _UserListState();
@@ -50,7 +52,7 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Make A Chat")),
+      appBar: AppBar(title: const Text("Make A Chat")),
       body: Column(
         children: [
           Padding(
@@ -60,14 +62,14 @@ class _UserListState extends State<UserList> {
                 Expanded(
                   child: TextField(
                     controller: _searchController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Search a name',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: () => cari,
                 ),
               ],
@@ -78,7 +80,7 @@ class _UserListState extends State<UserList> {
               stream: cari(), 
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 final users = snapshot.data!.docs;
                 return ListView.builder(
@@ -89,11 +91,11 @@ class _UserListState extends State<UserList> {
                       title: Text(user['name']),
                       subtitle: Text(user.id),
                       onTap: () async{
-                        var chat_id =  await _makeChat(user.id);
+                        var chatId =  await _makeChat(user.id);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ChatScreen(chatId: chat_id),
+                            builder: (context) => ChatScreen(chatId: chatId, nama: user['name']),
                           ),
                         );
                       },
