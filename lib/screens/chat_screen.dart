@@ -2,10 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:messaging_app/auth.dart';
-import 'package:messaging_app/screens/login_screen.dart';
+import 'package:test_chat/auth.dart';
 import 'package:intl/intl.dart';
-import 'package:messaging_app/screens/profile_page.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -22,16 +20,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> _sendMessage() async {
     final user = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.collection('messages').add({
-      'chat_id': widget.chatId,
-      'user_id': user!.uid,
-      'message': _messageController.text,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-    await FirebaseFirestore.instance.collection('chats').doc(widget.chatId).update({
-      'last_message': _messageController.text,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
+    if(_messageController.text != ''){
+      await FirebaseFirestore.instance.collection('messages').add({
+        'chat_id': widget.chatId,
+        'user_id': user!.uid,
+        'message': _messageController.text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      await FirebaseFirestore.instance.collection('chats').doc(widget.chatId).update({
+        'last_message': _messageController.text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
     _messageController.clear();
   }
 
@@ -42,24 +42,24 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('images/unknown.png'), // Replace with actual profile image
+              backgroundImage: Image.asset('images/unknown.png').image, // Replace with actual profile image
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Text(widget.nama),
           ],
         ),
         backgroundColor: Colors.teal,
         actions: [
           IconButton(
-            icon: Icon(Icons.call),
+            icon: const Icon(Icons.call),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.videocam),
+            icon: const Icon(Icons.videocam),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () {},
           ),
         ],
@@ -99,8 +99,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
                           child: Container(
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                             decoration: BoxDecoration(
                               color: usere ? Colors.teal[100] : Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -108,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             child: Column(
                               children: [
                                 Text( message['message'] ),
-                                Text(tanggal, style: TextStyle(fontSize: 11)),
+                                Text(tanggal, style: const TextStyle(fontSize: 11)),
                               ],
                             ),
                           ),
@@ -125,24 +125,24 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.emoji_emotions_outlined),
+                  icon: const Icon(Icons.emoji_emotions_outlined),
                   onPressed: () {},
                 ),
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Type a message...',
                       border: InputBorder.none,
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.attach_file),
+                  icon: const Icon(Icons.attach_file),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: _sendMessage,
                 ),
               ],

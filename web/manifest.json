@@ -1,6 +1,6 @@
 {
-    "name": "messaging_app",
-    "short_name": "messaging_app",
+    "name": "test_chat",
+    "short_name": "test_chat",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

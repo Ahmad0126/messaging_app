@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:messaging_app/screens/user_list.dart';
 import 'chat_screen.dart';
 
 class ChatListScreen extends StatefulWidget{
@@ -14,23 +13,39 @@ class ChatListScreen extends StatefulWidget{
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
+  bool isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chats'),
-        backgroundColor: const Color.fromARGB(255, 0, 150, 5),
+        title: !isSearching
+            ? Text('Chats', style: TextStyle(color: Colors.white))
+            : TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: (query) {
+                  // Logika pencarian, implementasi dapat ditambahkan di sini
+                },
+              ),
+         backgroundColor: Theme.of(context).primaryColor, // Warna dari tema global
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(isSearching ? Icons.close : Icons.search, color: Colors.white),
             onPressed: () {
-              // Search functionality
+              setState(() {
+                isSearching = !isSearching; // Toggle antara pencarian dan tidak
+              });
             },
           ),
           IconButton(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person, color: Colors.white),
             onPressed: () {
               Navigator.pushNamed(context, '/profile'); // Navigasi ke halaman profil
             },
@@ -64,12 +79,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   return Column(
                     children: [
                       ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: AssetImage('images/unknown.png'), // Ganti dengan image profil yang valid
+                        leading: const CircleAvatar(
+                          backgroundColor: Color(0xFF6B7B82),
+                          child: Icon(Icons.person), // Ganti dengan image profil yang valid
                         ),
-                        title: Text(snap1.data!.get('name')),
-                        subtitle: Text(chat['last_message']),
-                        trailing: Text(tanggal),
+                        title: Text(snap1.data!.get('name'), style: TextStyle(color: Colors.black)), // Warna teks
+                        subtitle: Text(chat['last_message'], style: TextStyle(color: Colors.black54)),
+                        trailing: Text(tanggal, style: TextStyle(color: Colors.black54)),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -79,7 +95,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           ); // Navigasi ke halaman chat
                         },
                       ),
-                      Divider(),
+                      Divider(
+                        color: Theme.of(context).dividerColor, // Divider menggunakan warna tema
+                        thickness: 1,
+                      ),
                     ],
                   );
                 },
@@ -89,11 +108,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, MaterialPageRoute(
-          builder: (context) => UserList(),
-        )),
-        child: Icon(Icons.message),
-        backgroundColor: Color.fromARGB(255, 52, 215, 112),
+        onPressed: () {
+          Navigator.pushNamed(context, '/contacts'); // Navigasi ke halaman kontak
+        },
+        child: Icon(Icons.message, color: Colors.white),
+        backgroundColor: Theme.of(context).colorScheme.secondary, // Gunakan warna tombol dari tema
       ),
     );
   }

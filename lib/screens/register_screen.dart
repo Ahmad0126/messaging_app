@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:messaging_app/auth.dart';
-import 'package:messaging_app/screens/chat_list_screen.dart';
+import 'package:test_chat/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -24,8 +23,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         Alert(
           context: context,
-          title: "Register Gagal",
-          desc: "Konfirmasi password anda kembali",
+          title: "Register Failed",
+          desc: "Confirm your password again",
           buttons: [
             DialogButton(
               child: const Text("OK"), 
@@ -58,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           Alert(
             context: context,
-            title: "Register Gagal",
+            title: "Register Failed",
             desc: e.message,
             buttons: [
               DialogButton(
@@ -79,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Color(0xFFD8EFD3), // Background color from the palette
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -87,59 +86,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Buat Akun',
+                'Create Account',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF55AD9B), // Title color
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: 20),
+              // Input for Name
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  labelText: 'Name', // Label for the name input
+                  labelStyle: TextStyle(color: Color(0xFF55AD9B)), // Label color
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF55AD9B)), // Border color
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              // Input for Email
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   labelText: 'Email',
+                  labelStyle: TextStyle(color: Color(0xFF55AD9B)), // Label color
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF55AD9B)), // Border color
                   ),
                 ),
               ),
               SizedBox(height: 10),
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelText: 'Nama',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
+              // Input for Password
               TextField(
                 controller: _passwordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   labelText: 'Password',
+                  labelStyle:
+                      TextStyle(color: Color(0xFF55AD9B)), // Label color
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF55AD9B)), // Border color
                   ),
                 ),
                 obscureText: true,
               ),
               SizedBox(height: 10),
+              // Input for Confirm Password
               TextField(
                 controller: _passwordConfirmController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  labelText: 'Konfirmasi Password',
+                  labelText: 'Confirm Password',
+                  labelStyle: TextStyle(color: Color(0xFF55AD9B)), // Label color
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF55AD9B)), // Border color
                   ),
                 ),
                 obscureText: true,
@@ -148,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ElevatedButton(
                 onPressed: _register,
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.greenAccent,
+                  backgroundColor: Color(0xFF55AD9B), // Button color
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                   textStyle: TextStyle(fontSize: 18),
                 ),

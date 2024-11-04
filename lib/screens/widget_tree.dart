@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:messaging_app/auth.dart';
-import 'package:messaging_app/screens/chat_list_screen.dart';
-import 'package:messaging_app/screens/login_screen.dart';
+import 'package:test_chat/auth.dart';
+import 'package:test_chat/screens/chat_list_screen.dart';
+import 'package:test_chat/screens/login_screen.dart';
 
 class WidgetTree extends StatefulWidget{
   const WidgetTree({super.key});
@@ -17,9 +17,9 @@ class _WidgetTreeState extends State<WidgetTree>{
       stream: Auth().authStateChanges, 
       builder: (context, snapshot) {
         if(snapshot.hasData){
-          return ChatListScreen();
+          return const ChatListScreen();
         }else{
-          return LoginScreen();
+          return const LoginScreen();
         }
       },
     );

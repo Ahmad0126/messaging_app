@@ -1,3 +1,3 @@
-# messaging_app
+# test_chat
 
 A new Flutter project.

@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:messaging_app/auth.dart';
-import 'package:messaging_app/screens/chat_list_screen.dart';
-import 'package:messaging_app/screens/register_screen.dart';
+import 'package:test_chat/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,16 +20,16 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(builder: (context) => ChatListScreen()),
+        '/chat-history',
       );
     } on FirebaseAuthException catch (e) {
       print('Login error: $e');
       setState(() {
         Alert(
           context: context,
-          title: "Login Gagal",
+          title: "Login Failed",
           desc: e.message,
           buttons: [
             DialogButton(
@@ -49,30 +47,32 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Color(0xFFD8EFD3), // Background color from the palette
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Welcome Back!',
+              const Text(
+                'Login',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF55AD9B), // Title color
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   labelText: 'Email',
+                  labelStyle: TextStyle(color: Color(0xFF55AD9B)), // Label color
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF55AD9B)), // Border color
                   ),
                 ),
               ),
@@ -83,8 +83,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   filled: true,
                   fillColor: Colors.white,
                   labelText: 'Password',
+                  labelStyle: TextStyle(color: Color(0xFF55AD9B)), // Label color
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(color: Color(0xFF55AD9B)), // Border color
                   ),
                 ),
                 obscureText: true,
@@ -93,27 +95,20 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.greenAccent,
+                  backgroundColor: Color(0xFF55AD9B), // Button color
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                   textStyle: TextStyle(fontSize: 18),
                 ),
                 child: Text('Login'),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  children: [
-                    const Text("Belum Punya Akun? "),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/register');
-                      },
-                      child: Text(
-                        'Daftar',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
+              SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register'); // Navigate to register
+                },
+                child: Text(
+                  'Don\'t have an account? Register here',
+                  style: TextStyle(color: Color(0xFF55AD9B)), // Button text color
                 ),
               ),
             ],
